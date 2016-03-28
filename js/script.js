@@ -5,12 +5,19 @@ $(function () {
     this.posts = $('.page-posts');
     this.template = $('.page-posts__post-tmpl');
     this.feedUrl = 'http://node.dev.puzankov.com/rss/data';
+    this.postsOnPage = 5;
+    this.pagination = $('.widget-tags__tags');
+    this.paginationNumber = 1;
+    this.feedList = [];
 
     this.init();
   }
 
   RSSReader.prototype.init = function () {
     this.navigation.bind('click', this.onLinkClicked.bind(this));
+    this.pagination.bind('click', this.onPaginationClick.bind(this));
+
+    $('#navigation__habr').trigger('click');
   }
 
   RSSReader.prototype.onLinkClicked = function (e) {
@@ -18,6 +25,7 @@ $(function () {
     var feedID = e.target.getAttribute('href');
 
     this.makeRSSRequest(feedID)
+    this.setUrlHash(feedID);
   };
 
   RSSReader.prototype.makeRSSRequest = function (feedID) {
@@ -27,32 +35,29 @@ $(function () {
           data: {kind: feedID},
           dataType: 'JSON'
         })
-        .success(this.parseData.bind(this))
+        .success(this.getFeedList.bind(this))
         .error(function(error) {
           console.log(error);
         });
   }
 
-  RSSReader.prototype.parseData = function (data) {
-    var __self = this;
-    var tmpl = '<article class="page-posts__post"><header class="post__header"><time class="post__header__date" datetime="{{datetime-attr}}"><span class="datetime__day">{{datetime-day}}</span><span class="datetime__monyear">{{datetime-month-year}}</span></time><div class="post__header__headline"><div class="post__header__title">{{post-title}}</div><div class="post__header__written-by">Written by {{post-written-by}}</div></div></header><div class="post__text">{{post-text}}</div><a href="{{post-readmore}}" class="post__read-more">Read More</a><footer class="post__footer"><div class="post__footer__category">Standart</div><div class="post__footer__category">Status</div><div class="post__footer__category">Comments</div><i class="post__icon fa fa-thumb-tack"></i></footer></article>',
-        dataItems = data.items,
-        resultHtml = [];
-    //datetime-attr
-    //datetime-day
-    //{{datetime-month-year}}
-    //{{post-title}}
-    //{{post-written-by}}
-    //{{post-img}}
-    //{{post-text}}
-    //{{post-readmore}}
+  RSSReader.prototype.getFeedList = function (data) {
+    this.feedList = data.items;
 
-    console.log(data);
+    this.render();
+  }
 
-    dataItems.forEach(function (item) {
-      resultHtml.push(__self.parseItem(item));
-    });
+  RSSReader.prototype.render = function () {
+    var resultHtml = [],
+        start = (this.paginationNumber - 1) * this.postsOnPage;
 
+    this.makePagination(this.feedList);
+
+    for(var i = start; i < start + this.postsOnPage; i++) {
+      resultHtml.push(this.parseItem(this.feedList[i]));
+    }
+
+    this.posts.html('');
     this.posts.html(resultHtml);
 
   }
@@ -66,8 +71,6 @@ $(function () {
         year = date.getFullYear(),
         month = months[date.getMonth()];
         day = date.getDate();
-
-    console.log(item);
 
     newItem
         .find('.post__header__title')
@@ -89,6 +92,27 @@ $(function () {
         .html('Written by ' + item.author);
 
     return newItem;
+  }
+
+  RSSReader.prototype.makePagination = function (data) {
+    var paginationList = [];
+    for(var i = 1; i <= (this.feedList.length / this.postsOnPage); i++) {
+      paginationList.push('<a href="' + i + '" class="tag">' + i + '</a>')
+    }
+
+    this.pagination.html(paginationList);
+  }
+
+  RSSReader.prototype.onPaginationClick = function (e) {
+    e.preventDefault();
+
+    this.paginationNumber = e.target.getAttribute('href');
+
+    this.render()
+  }
+
+  RSSReader.prototype.setUrlHash = function (hash) {
+    window.location.hash = '#' + hash;
   }
 
   window.rssreader = new RSSReader();

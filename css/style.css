@@ -187,6 +187,11 @@
   background: #eeeded;
 }
 
+a {
+  text-decoration: none;
+  color: #ff8800;
+}
+
 .page-header {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1456,4 +1461,8 @@
   text-decoration: none;
   text-transform: uppercase;
   background: #333333;
+}
+
+.widget-pagination {
+  margin-top: 25px;
 }
