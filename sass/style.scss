@@ -1,0 +1,12 @@
+@import "utils/_variables.scss";
+@import "utils/_mixins.scss";
+
+@import "base/_main.scss";
+
+@import "layout/_page-header.scss";
+@import "layout/_page-posts.scss";
+@import "layout/_page-widgets.scss";
+@import "layout/_page-footer.scss";
+
+@import "components/_post.scss";
+@import "components/_widgets.scss";

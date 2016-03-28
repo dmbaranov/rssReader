@@ -1,0 +1,8 @@
+.page-posts {
+  @include col-xs-24;
+  @include col-sm-16;
+  @include col-md-16;
+  @include col-lg-16;
+
+  margin-bottom: 20px;
+}

@@ -1,0 +1,30 @@
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container-body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container-fluid-header {
+  background: black;
+}
+
+.container-fluid-footer-first {
+  background: $light-black;
+}
+
+.container-fluid-footer-second {
+  background: black;
+}
+
+.container-fluid-body {
+  background: $light-gray;
+}

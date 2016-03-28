@@ -1,0 +1,64 @@
+.page-header {
+  @include row;
+
+  align-items: center;
+  height: 70px;
+
+  @include mq-sm {
+    height: 80px;
+  }
+
+  @include mq-md {
+    height: 80px;
+  }
+
+  @include mq-lg {
+    height: 80px;
+  }
+}
+
+.page-header__burger {
+  @include col-xs-9;
+  @include col-xs-offset-1;
+  @include hidden-sm;
+  @include hidden-md;
+  @include hidden-lg;
+
+  height: 24px;
+
+  //background: url(../../img/menu-burger.svg) no-repeat;
+  background: url(../../img/menu-burger.svg) no-repeat;
+}
+
+.page-header__logo {
+  @include col-xs-11;
+  @include col-xs-offset-1;
+  @include col-sm-4;
+  @include col-sm-offset-1;
+  @include col-md-4;
+  @include col-md-offset-1;
+  @include col-lg-4;
+  @include col-lg-offset-0;
+
+  height: 40px;
+
+  background: url(../../img/GOBLOg.png) no-repeat center left;
+}
+
+.page-header__navigation {
+  @include hidden-xs;
+  @include col-sm-19;
+  @include col-md-19;
+  @include col-lg-20;
+
+  display: flex;
+  justify-content: flex-end;
+
+
+  a {
+    padding-right: 20px;
+
+    color: $navigation-items-color;
+    text-decoration: none;
+  }
+}
